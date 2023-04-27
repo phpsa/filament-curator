@@ -8,9 +8,9 @@ use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Awcodes\Curator\Facades\Curator;
 use Exception;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -37,22 +37,22 @@ class MediaResource extends Resource
         return Str::title(static::getPluralModelLabel()) ?? Str::title(static::getModelLabel());
     }
 
-    protected static function getNavigationIcon(): string
+    public static function getNavigationIcon(): string
     {
         return app('curator')->getNavigationIcon();
     }
 
-    protected static function getNavigationSort(): ?int
+    public static function getNavigationSort(): ?int
     {
         return app('curator')->getNavigationSort();
     }
 
-    protected static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
         return app('curator')->getNavigationGroup();
     }
 
-    protected static function shouldRegisterNavigation(): bool
+    public static function shouldRegisterNavigation(): bool
     {
         return app('curator')->shouldRegisterNavigation();
     }
@@ -162,7 +162,15 @@ class MediaResource extends Resource
             ->actions([
                 app('curator')->shouldTableHaveIconActions() ? Tables\Actions\EditAction::make()->iconButton() : Tables\Actions\EditAction::make(),
                 app('curator')->shouldTableHaveIconActions() ? Tables\Actions\DeleteAction::make()->iconButton() : Tables\Actions\DeleteAction::make(),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc')
+            ->contentGrid(fn () => app('curator')->shouldTableHaveGridLayout() ? [
+                'md' => 2,
+                'lg' => 3,
+                'xl' => 4,
+            ] : null)
+            ->defaultPaginationPageOption(12)
+            ->paginated([6, 12, 24, 48, 'all']);
     }
 
     public static function getPages(): array

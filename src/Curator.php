@@ -18,7 +18,7 @@ class Curator
 
     protected string|Closure $pluralResourceLabel = 'Media';
 
-    protected string $navigationIcon = 'heroicon-o-photograph';
+    protected string $navigationIcon = 'heroicon-o-photo';
 
     protected string|null $navigationGroup = null;
 
@@ -452,6 +452,6 @@ class Curator
 
     public function getGliderFallback(string $key): ?array
     {
-        return collect($this->getGliderFallbacks())->where('key', $key)->sole();
+        return $this->getGliderFallbacks() ? collect($this->getGliderFallbacks())->where('key', $key)->sole() : null;
     }
 }

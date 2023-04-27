@@ -4,23 +4,23 @@ namespace Awcodes\Curator;
 
 use Awcodes\Curator\Commands\UpgradeCommand;
 use Awcodes\Curator\Observers\MediaObserver;
-use Composer\InstalledVersions;
-use Filament\PluginServiceProvider;
+use Filament\Facades\Filament;
+use Filament\Support\Assets\AlpineComponent;
+use Filament\Support\Assets\AssetManager;
+use Filament\Support\Assets\Css;
+use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Support\Facades\Blade;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class CuratorServiceProvider extends PluginServiceProvider
+class CuratorServiceProvider extends PackageServiceProvider
 {
     public static string $name = 'curator';
 
-    public static string $version = 'dev';
-
     public function configurePackage(Package $package): void
     {
-        static::$version = InstalledVersions::getVersion('awcodes/filament-curator');
-
         $package->name(static::$name)
             ->hasRoute('web')
             ->hasViews()
@@ -41,6 +41,14 @@ class CuratorServiceProvider extends PluginServiceProvider
         parent::packageRegistered();
 
         $this->app->singleton('curator', fn (): Curator => new Curator());
+
+        $this->app->resolving(AssetManager::class, function () {
+           FilamentAsset::register([
+               AlpineComponent::make('curator', __DIR__ . '/../resources/dist/curator.js'),
+               AlpineComponent::make('curation', __DIR__ . '/../resources/dist/curation.js'),
+               Css::make('plugin-curator-styles', __DIR__ . '/../resources/dist/curator.css'),
+           ], static::$name);
+        });
     }
 
     public function packageBooted(): void
@@ -54,26 +62,9 @@ class CuratorServiceProvider extends PluginServiceProvider
 
         Blade::component('curator-glider', View\Components\Glider::class);
         Blade::component('curator-curation', View\Components\Curation::class);
-    }
 
-    protected function getResources(): array
-    {
-        return [
+        filament()->getCurrentContext()->resources([
             Resources\MediaResource::class,
-        ];
-    }
-
-    protected function getStyles(): array
-    {
-        return [
-            'plugin-curator-' . static::$version => __DIR__.'/../resources/dist/curator.css',
-        ];
-    }
-
-    protected function getBeforeCoreScripts(): array
-    {
-        return [
-            'plugin-curator-' . static::$version => __DIR__.'/../resources/dist/curator.js',
-        ];
+        ]);
     }
 }

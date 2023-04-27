@@ -83,7 +83,7 @@
                                 }"
                                 x-on:click="handleCopy('{{ $record->url }}'); toggleMessage();"
                         >
-                            <span x-show="! showMessage" class="filament-link">@svg('heroicon-s-clipboard-copy', 'w-4 h-4')</span>
+                            <span x-show="! showMessage" class="filament-link">@svg('heroicon-s-document-duplicate', 'w-4 h-4')</span>
                             <span x-show="showMessage" class="text-success-500 font-bold" style="display:none;">@svg('heroicon-s-check-circle', 'w-4 h-4')</span>
                             <span x-show="! showMessage" class="filament-link">{{ __('curator::views.details.copy_url') }}</span>
                             <span x-show="showMessage" class="text-success-500 font-bold" style="display:none;">{{ __('curator::views.details.url_copied') }}</span>
