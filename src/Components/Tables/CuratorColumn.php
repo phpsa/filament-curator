@@ -65,6 +65,7 @@ class CuratorColumn extends ImageColumn
             }
 
             $state = Arr::wrap($state);
+
             return app('curator')->getMedia(array_slice($state, 0, $this->limit));
         }
 
@@ -86,28 +87,28 @@ class CuratorColumn extends ImageColumn
         return $this->evaluate($this->ring);
     }
 
-    public function limit(int | Closure | null $limit = 3): static
+    public function limit(int|Closure|null $limit = 3): static
     {
         $this->limit = $limit;
 
         return $this;
     }
 
-    public function overlap(int | Closure | null $overlap): static
+    public function overlap(int|Closure|null $overlap): static
     {
         $this->overlap = $overlap;
 
         return $this;
     }
 
-    public function resolution(int | Closure | null $resolution): static
+    public function resolution(int|Closure|null $resolution): static
     {
         $this->resolution = $resolution;
 
         return $this;
     }
 
-    public function ring(string | Closure | null $ring): static
+    public function ring(string|Closure|null $ring): static
     {
         $this->ring = $ring;
 

@@ -3,8 +3,6 @@
 namespace Awcodes\Curator\Actions;
 
 use Awcodes\Curator\Components\Forms\CuratorPicker;
-use Awcodes\Curator\Facades\Curator;
-use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\Actions\Action;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Support\Str;
