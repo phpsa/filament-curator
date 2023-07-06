@@ -96,6 +96,7 @@ class Glider extends Component
         if ($this->media) {
             if (is_a($this->media, stdClass::class)) {
                 $urlBuilder = UrlBuilderFactory::create('/curator/', config('app.key'));
+
                 return $urlBuilder->getUrl($this->media->path, $params);
             }
 

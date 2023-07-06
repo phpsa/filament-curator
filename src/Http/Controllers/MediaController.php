@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Storage;
 use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Signatures\SignatureException;
 use League\Glide\Signatures\SignatureFactory;
-use League\Glide\Urls\UrlBuilderFactory;
 
 class MediaController extends Controller
 {
@@ -18,17 +17,18 @@ class MediaController extends Controller
         $mediaModel = Curator::getMediaModel();
         $selected = $request->has('media') ? explode(',', $request->media) : [];
 
-        $files = $mediaModel::when($selected, function($query, $selected) {
-                return $query->whereNotIn('id', $selected);
-            })
-            ->when($request->has('directory'), function($query) use ($request) {
+        $files = $mediaModel::when($selected, function ($query, $selected) {
+            return $query->whereNotIn('id', $selected);
+        })
+            ->when($request->has('directory'), function ($query) use ($request) {
                 return $query->where('directory', $request->directory);
             })
-            ->when($request->has('types'), function($query) use ($request) {
+            ->when($request->has('types'), function ($query) use ($request) {
                 $types = explode(',', $request->types);
                 $query = $query->whereIn('type', $types);
                 $wildcardTypes = collect($types)->filter(fn ($type) => str_contains($type, '*'));
-                $wildcardTypes?->map(fn($type) => $query->orWhere('type', 'LIKE', str_replace('*', '%', $type)));
+                $wildcardTypes?->map(fn ($type) => $query->orWhere('type', 'LIKE', str_replace('*', '%', $type)));
+
                 return $query;
             })
             ->latest()
@@ -41,7 +41,7 @@ class MediaController extends Controller
                     return array_search($model->id, $selected);
                 })
                 ->reverse()
-                ->map(function($item) use ($files) {
+                ->map(function ($item) use ($files) {
                     $files->prepend($item);
                 });
         }
@@ -52,7 +52,7 @@ class MediaController extends Controller
     public function search(Request $request)
     {
         $files = Curator::getMediaModel()::query()
-            ->when($request->has('directory'), function($query) use ($request) {
+            ->when($request->has('directory'), function ($query) use ($request) {
                 return $query->where('directory', $request->query('directory'));
             })
             ->when($request->query('q'), function ($query) use ($request) {
