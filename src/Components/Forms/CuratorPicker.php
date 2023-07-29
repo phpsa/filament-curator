@@ -46,7 +46,7 @@ class CuratorPicker extends Field
 
     protected string|Closure|null $curatorImageResizeTargetWidth = null;
 
-    protected string|null $curatorPathGenerator = null;
+    protected ?string $curatorPathGenerator = null;
 
     protected int|Closure|null $curatorMaxSize = null;
 
@@ -58,13 +58,13 @@ class CuratorPicker extends Field
 
     protected bool|Closure|null $isConstrained = false;
 
-    protected bool|null $isLimitedToDirectory = null;
+    protected ?bool $isLimitedToDirectory = null;
 
     protected bool|Closure|null $isMultiple = false;
 
     protected int|Closure|null $maxItems = null;
 
-    protected string|null $orderColumn = null;
+    protected ?string $orderColumn = null;
 
     protected string|Closure|null $relationship = null;
 
@@ -85,8 +85,9 @@ class CuratorPicker extends Field
         $this->afterStateHydrated(static function (CuratorPicker $component, array|int|null $state): void {
             $items = [];
 
-            if (!filled($state)) {
+            if (! filled($state)) {
                 $component->state($items);
+
                 return;
             }
 
@@ -100,7 +101,7 @@ class CuratorPicker extends Field
             }
 
             foreach ($media as $itemData) {
-                $items[(string)Str::uuid()] = $itemData;
+                $items[(string) Str::uuid()] = $itemData;
             }
 
             $component->state($items);
@@ -112,20 +113,20 @@ class CuratorPicker extends Field
             $state = array_values($state);
 
             foreach ($state as $itemData) {
-                $items[(string)Str::uuid()] = $itemData;
+                $items[(string) Str::uuid()] = $itemData;
             }
 
             $component->state($items);
         });
 
         $this->dehydrateStateUsing(function (CuratorPicker $component, $state) {
-            if (!filled($state)) {
+            if (! filled($state)) {
                 return null;
             }
 
             $state = collect($state)->pluck('id')->toArray();
 
-            if (count($state) === 1 && is_array($state) && !$component->isMultiple()) {
+            if (count($state) === 1 && is_array($state) && ! $component->isMultiple()) {
                 $state = $state[0];
             }
 
@@ -209,7 +210,7 @@ class CuratorPicker extends Field
      */
     public function getCurrentItem(): Model|Collection|null
     {
-        if (!filled($this->getState())) {
+        if (! filled($this->getState())) {
             return null;
         }
 
@@ -332,7 +333,7 @@ class CuratorPicker extends Field
 
     public function isLimitedToDirectory(): bool
     {
-        if (!$this->getDirectory()) {
+        if (! $this->getDirectory()) {
             return false;
         }
 
@@ -408,7 +409,7 @@ class CuratorPicker extends Field
         return $this;
     }
 
-    public function relationship(string|Closure $relationshipName, string|Closure $titleColumnName, ?Closure $callback = null): static
+    public function relationship(string|Closure $relationshipName, string|Closure $titleColumnName, Closure $callback = null): static
     {
         $this->relationship = $relationshipName;
         $this->relationshipTitleColumnName = $titleColumnName;
@@ -431,7 +432,7 @@ class CuratorPicker extends Field
             /** @var BelongsTo $relationship */
             $relatedModel = $relationship->getResults();
 
-            if (!$relatedModel) {
+            if (! $relatedModel) {
                 return;
             }
 
@@ -446,7 +447,7 @@ class CuratorPicker extends Field
 
             $relationship = $component->getRelationship();
 
-            if (blank($state) && !$relationship->exists()) {
+            if (blank($state) && ! $relationship->exists()) {
                 return;
             }
 
@@ -461,6 +462,7 @@ class CuratorPicker extends Field
                     });
 
                     $relationship->sync($state ?? []);
+
                     return;
                 }
 
@@ -472,6 +474,7 @@ class CuratorPicker extends Field
 
             if (blank($state) && $relationship->exists()) {
                 $relationship->dissociate();
+
                 return;
             }
 
@@ -479,7 +482,7 @@ class CuratorPicker extends Field
             $record->save();
         });
 
-        $this->dehydrated(fn(CuratorPicker $component): bool => !$component->isMultiple());
+        $this->dehydrated(fn (CuratorPicker $component): bool => ! $component->isMultiple());
 
         return $this;
     }

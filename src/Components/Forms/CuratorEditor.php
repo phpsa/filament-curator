@@ -33,7 +33,7 @@ class CuratorEditor extends Field
         return $this->evaluate($this->buttonLabel);
     }
 
-    public function getPresets(): array|null
+    public function getPresets(): ?array
     {
         return app('curator')->getCurationPresets();
     }

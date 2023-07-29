@@ -24,29 +24,29 @@ class CuratorPanel extends Component implements HasForms
 
     public array $data = [];
 
-    public string|null $directory;
+    public ?string $directory;
 
     public string $diskName = 'public';
 
-    public string|null $imageCropAspectRatio = null;
+    public ?string $imageCropAspectRatio = null;
 
-    public string|null $imageResizeMode = null;
+    public ?string $imageResizeMode = null;
 
-    public string|null $imageResizeTargetWidth = null;
+    public ?string $imageResizeTargetWidth = null;
 
-    public string|null $imageResizeTargetHeight = null;
+    public ?string $imageResizeTargetHeight = null;
 
     public bool $isLimitedToDirectory = false;
 
     public bool $isMultiple = false;
 
-    public int|null $maxSize = null;
+    public ?int $maxSize = null;
 
-    public int|null $maxWidth = null;
+    public ?int $maxWidth = null;
 
-    public int|null $minSize = null;
+    public ?int $minSize = null;
 
-    public int|null $mediaId = null;
+    public ?int $mediaId = null;
 
     public string $modalId;
 
@@ -54,7 +54,7 @@ class CuratorPanel extends Component implements HasForms
 
     public array $selected = [];
 
-    public string|null $statePath;
+    public ?string $statePath;
 
     public bool $shouldPreserveFilenames = false;
 

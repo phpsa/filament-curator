@@ -21,7 +21,7 @@ class Curator
 
     protected array $cloudDisks = ['s3', 'cloudinary', 'imgix'];
 
-    protected array|null $curationPresets = [];
+    protected ?array $curationPresets = [];
 
     protected string|Closure|null $directory = null;
 
@@ -33,7 +33,7 @@ class Curator
 
     protected string $glideDriver = 'gd';
 
-    protected array|null $gliderFallbacks = [];
+    protected ?array $gliderFallbacks = [];
 
     protected Server|ServerFactory|null $glideServer = null;
 
@@ -57,11 +57,11 @@ class Curator
 
     protected int|Closure $minSize = 0;
 
-    protected string|null $navigationGroup = null;
+    protected ?string $navigationGroup = null;
 
     protected string $navigationIcon = 'heroicon-o-photograph';
 
-    protected int|null $navigationSort = null;
+    protected ?int $navigationSort = null;
 
     protected PathGenerator|string|null $pathGenerator = null;
 
@@ -95,7 +95,7 @@ class Curator
         return $this;
     }
 
-    public function curationPresets(array|null $presets): static
+    public function curationPresets(?array $presets): static
     {
         $this->curationPresets = $presets;
 
@@ -133,7 +133,7 @@ class Curator
         return $this->cloudDisks;
     }
 
-    public function getCurationPresets(): array|null
+    public function getCurationPresets(): ?array
     {
         return collect($this->curationPresets)->map(function ($preset) {
             return $preset->getPreset();
@@ -234,17 +234,17 @@ class Curator
         return $this->evaluate($this->pluralResourceLabel);
     }
 
-    public function getNavigationGroup(): string|null
+    public function getNavigationGroup(): ?string
     {
         return $this->navigationGroup;
     }
 
-    public function getNavigationIcon(): string|null
+    public function getNavigationIcon(): ?string
     {
         return $this->navigationIcon;
     }
 
-    public function getNavigationSort(): int|null
+    public function getNavigationSort(): ?int
     {
         return $this->navigationSort;
     }
@@ -323,7 +323,7 @@ class Curator
         return $this;
     }
 
-    public function gliderFallbacks(array|null $fallbacks): static
+    public function gliderFallbacks(?array $fallbacks): static
     {
         $this->gliderFallbacks = $fallbacks;
 
@@ -417,7 +417,7 @@ class Curator
         return $this;
     }
 
-    public function navigationGroup(string|null $group = null): static
+    public function navigationGroup(string $group = null): static
     {
         $this->navigationGroup = $group;
 

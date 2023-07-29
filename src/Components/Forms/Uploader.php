@@ -16,7 +16,7 @@ class Uploader extends FileUpload
 {
     use CanNormalizePaths;
 
-    protected string|null $pathGenerator = null;
+    protected ?string $pathGenerator = null;
 
     public function getDirectory(): ?string
     {
@@ -40,7 +40,7 @@ class Uploader extends FileUpload
         return $this->pathGenerator;
     }
 
-    public function pathGenerator(string|null $generator): static
+    public function pathGenerator(?string $generator): static
     {
         $this->pathGenerator = $generator;
 
